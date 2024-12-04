@@ -25,12 +25,11 @@ jobs:
       run: dotnet build --no-restore --configuration Release
 
     - name: Publish
-      run: dotnet publish -c Release -o publish_output
+      run: dotnet publish -c Release --property:PublishDir='./myapp'
 
     - name: Deploy to Azure Web App
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: deployment-test-app
-        slot-name: production
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: publish_output
+      uses: azure/webapps-deploy@v3
+      with: 
+        app-name: 'deployment-test-app'
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }}
+        package: './myapp'
